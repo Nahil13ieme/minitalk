@@ -1,18 +1,36 @@
-CC=CC
-CFLAGS= -Wall -Wextra -Werror -I
-SRCS = server.c client.c
+SRCS_SERVER = server.c utils.c
+SRCS_CLIENT = client.c utils.c messages.c
+OBJ_SERVER = $(SRCS_SERVER:.c=.o)
+OBJ_CLIENT = $(SRCS_CLIENT:.c=.o)
 
+FT_PRINTF_DIR = ft_printf
+FT_PRINTF_LIB = $(FT_PRINTF_DIR)/ftprintf.a
 
-#RULES
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -I. -I$(FT_PRINTF_DIR)
 
-%.o = %.c $(SRCS)
-	$(cc) $(CFLAGS) -c $@ $<
-all:
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+all: server client
+
+server: $(OBJ_SERVER) $(FT_PRINTF_LIB)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_SERVER) $(FT_PRINTF_LIB)
+
+client: $(OBJ_CLIENT) $(FT_PRINTF_LIB)
+	$(CC) $(CFLAGS) -o $@ $(OBJ_CLIENT) $(FT_PRINTF_LIB)
+
+$(FT_PRINTF_LIB):
+	$(MAKE) -C $(FT_PRINTF_DIR)
 
 clean:
+	rm -f *.o
+	$(MAKE) -C $(FT_PRINTF_DIR) clean
 
-fclean:
+fclean: clean
+	rm -f server client
+	$(MAKE) -C $(FT_PRINTF_DIR) fclean
 
-re:
+re: fclean all
 
-.PHONY re fclean clean all
+.PHONY: all clean fclean re

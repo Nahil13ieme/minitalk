@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   messages.c                                         :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 08:08:32 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/01/31 14:54:46 by nbenhami         ###   ########.fr       */
+/*   Created: 2024/11/14 18:34:22 by nbenhami          #+#    #+#             */
+/*   Updated: 2025/01/31 15:09:50 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-void	ft_strtobyte(int pid, char *str)
-{
-	int	i;
-	int	j;
+# include <stdarg.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
 
-	i = 0;
-	while (i <= ft_strlen(str))
-	{
-		j = 8;
-		while (--j >= 0)
-		{
-			usleep(100);
-			if ((((unsigned char)(str[i] >> j)) & 1))
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-		}
-		i++;
-	}
-}
+int	ft_printf(const char *str, ...);
+int	ft_putchar(char c, int fd);
+int	ft_putstr(char *str, int fd);
+int	ft_strlen(char *s);
+int	ft_check_format(char c, va_list args);
 
-void	send_message(int pid, char *str)
-{
-	ft_strtobyte(pid, str);
-}
+#endif
