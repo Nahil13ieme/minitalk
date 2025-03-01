@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 07:28:43 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/01/31 15:08:25 by nbenhami         ###   ########.fr       */
+/*   Created: 2025/03/01 17:09:47 by nbenhami          #+#    #+#             */
+/*   Updated: 2025/03/01 20:32:54 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,27 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "ft_printf/ft_printf.h"
+
+extern volatile sig_atomic_t g_acknowledgment;
 
 typedef struct s_buffer
 {
-	int				bits;
-	int				received_byte;
-	char			*str;
-}	t_buffer;
+	int		buffer_size;
+	int		received_size;
+	int		bits;
+	int		index;
+	char	*str;
+} t_buffer;
 
-int		ft_strlen(char *str);
-int		check_atoi(char *str);
-void	send_message(int pid, char *str);
-int		receive_message(void);
+extern t_buffer g_buffer;
+
+void	handler(int signo, siginfo_t *info, void *context);
+void	my_signal(int sig, void *handler, int b_siginfo);
+void	send_int(int pid, int len);
+void	send_string(int pid, char *message);
+void	clear_buffer(void);
+void	ft_putnbr_fd(int n);
 int		ft_atoi(char *str);
-char	*ft_strjoin(char *s1, char c);
+int		ft_strlen(char *str);
 
 #endif

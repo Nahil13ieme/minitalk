@@ -5,74 +5,78 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/24 08:07:26 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/01/31 15:10:11 by nbenhami         ###   ########.fr       */
+/*   Created: 2025/03/01 19:55:37 by nbenhami          #+#    #+#             */
+/*   Updated: 2025/03/01 20:03:48 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int	check_atoi(char *str)
+int	ft_atoi(char *str)
+{
+	int	i;
+	int	result;
+
+	i = 0;
+	result = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result);
+}
+
+int	ft_strlen(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
 		i++;
-	}
-	return (1);
+	return (i);
 }
 
-int	ft_atoi(char *str)
+void	ft_putnbr_fd(int n)
 {
-	int	n;
-	int	sign;
-	int	i;
+	char	c;
 
-	sign = 1;
-	n = 0;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	while (str[i] == '+' || str[i] == '-')
+	if (n == -2147483648)
 	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
+		write(1, "-2147483648", 11);
+		return ;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	if (n < 0)
 	{
-		n = (n * 10) + str[i] - '0';
-		i++;
+		write(1, "-", 1);
+		n = -n;
 	}
-	return (n);
+	if (n > 9)
+		ft_putnbr_fd(n / 10);
+	c = (n % 10) + '0';
+	write(1, &c, 1);
 }
 
-char	*ft_strjoin(char *s1, char c)
+void	my_signal(int sig, void *handler, int b_siginfo)
 {
-	char			*array;
-	unsigned int	size;
-	int				i;
-	int				j;
+	struct sigaction	sa;
 
-	if (!s1 && !c)
-		return (NULL);
-	if (!s1)
-		size = 1;
+	sa = (struct sigaction){0};
+	if (b_siginfo)
+	{
+		sa.sa_flags = SA_SIGINFO;
+		sa.sa_sigaction = handler;
+	}
 	else
-		size = ft_strlen(s1) + 1;
-	array = (char *)malloc(sizeof(char) * (size + 1));
-	if (!array)
-		return (NULL);
-	i = 0;
-	j = 0;
-	if (s1)
-		while (s1[i])
-			array[j++] = s1[i++];
-	array[j] = c;
-	array[size] = '\0';
-	return (free(s1), array);
+		sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
+	if (sigaction(sig, &sa, NULL) < 0)
+	{
+		perror("sigaction failed");
+		exit(EXIT_FAILURE);
+	}
 }
