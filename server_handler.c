@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:56:37 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:19:15 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:50:30 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	handle_str_size(int signo, siginfo_t *info)
 	{
 		g_buffer.bits = 0;
 		g_buffer.received_size = 1;
-		ft_putnbr_fd(g_buffer.buffer_size);
 		g_buffer.str = malloc(sizeof(char) * (g_buffer.received_size + 1));
 	}
 	kill(info->si_pid, SIGUSR1);
@@ -28,7 +27,8 @@ static void	handle_str_size(int signo, siginfo_t *info)
 
 static void	handle_str(int signo, siginfo_t *info)
 {
-	g_buffer.str[g_buffer.index] = (g_buffer.str[g_buffer.index] << 1) | (signo == SIGUSR1);
+	g_buffer.str[g_buffer.index] = (g_buffer.str[g_buffer.index] << 1)
+		| (signo == SIGUSR1);
 	g_buffer.bits++;
 	if (g_buffer.bits == 8)
 	{
@@ -38,6 +38,10 @@ static void	handle_str(int signo, siginfo_t *info)
 	if (g_buffer.index == g_buffer.buffer_size)
 	{
 		g_buffer.str[g_buffer.buffer_size] = '\0';
+		write(1, "\033[0;34m", 8);
+		write(1, "client_", 8);
+		ft_putnbr_fd(info->si_pid);
+		write(1, "\033[0;32m»", 9);
 		write(1, g_buffer.str, g_buffer.buffer_size);
 		write(1, "\n", 1);
 		clear_buffer();

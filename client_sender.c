@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 20:24:02 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:35:36 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:40:55 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	send_sig(int pid, int sig)
 	}
 }
 
-static void	handle_signal()
+static void	handle_signal(void)
 {
 	int	ack;
 
@@ -32,7 +32,7 @@ static void	handle_signal()
 		if (ack > 500)
 			break ;
 		ack++;
-		usleep(1);	
+		usleep(1);
 	}
 	g_acknowledgment = 0;
 }

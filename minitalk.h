@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:09:47 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:32:54 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:42:06 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-extern volatile sig_atomic_t g_acknowledgment;
-
 typedef struct s_buffer
 {
 	int		buffer_size;
@@ -30,9 +28,10 @@ typedef struct s_buffer
 	int		bits;
 	int		index;
 	char	*str;
-} t_buffer;
+}	t_buffer;
 
-extern t_buffer g_buffer;
+extern volatile sig_atomic_t	g_acknowledgment;
+extern t_buffer					g_buffer;
 
 void	handler(int signo, siginfo_t *info, void *context);
 void	my_signal(int sig, void *handler, int b_siginfo);

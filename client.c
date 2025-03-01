@@ -6,13 +6,13 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:09:54 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:33:30 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/01 20:44:03 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-volatile sig_atomic_t g_acknowledgment = 0;
+volatile sig_atomic_t	g_acknowledgment;
 
 static int	is_digit(char *str)
 {
@@ -30,6 +30,7 @@ static void	invalid_format(char *name, char *format)
 	write(2, "Invalid format: ", 16);
 	write(2, name, ft_strlen(name));
 	write(2, format, ft_strlen(format));
+	write(2, "\n", 1);
 	exit(EXIT_FAILURE);
 }
 
