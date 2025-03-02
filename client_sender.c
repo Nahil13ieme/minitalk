@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 20:24:02 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:40:55 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 13:02:46 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	handle_signal(void)
 	g_acknowledgment = 0;
 	while (!g_acknowledgment)
 	{
-		if (ack > 500)
+		if (ack >= 150)
 			break ;
 		ack++;
 		usleep(1);

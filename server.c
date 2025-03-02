@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:09:50 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:07:05 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:52:21 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(void)
 	init_buffer();
 	my_signal(SIGUSR1, handler, 1);
 	my_signal(SIGUSR2, handler, 1);
+	my_signal(SIGINT, handler, 1);
 	while (1)
 		pause();
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 19:56:37 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/01 20:50:30 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 13:01:34 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handle_str_size(int signo, siginfo_t *info)
 	{
 		g_buffer.bits = 0;
 		g_buffer.received_size = 1;
-		g_buffer.str = malloc(sizeof(char) * (g_buffer.received_size + 1));
+		g_buffer.str = malloc(sizeof(char *) * (g_buffer.buffer_size + 1));
 	}
 	kill(info->si_pid, SIGUSR1);
 }
@@ -53,8 +53,18 @@ static void	handle_str(int signo, siginfo_t *info)
 void	handler(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
-	if (!g_buffer.received_size)
-		handle_str_size(signo, info);
-	else
-		handle_str(signo, info);
+	if (signo == SIGUSR1 || signo == SIGUSR2)
+	{
+		if (!g_buffer.received_size)
+			handle_str_size(signo, info);
+		else
+			handle_str(signo, info);
+	}
+	else if (signo == SIGINT)
+	{
+		write(1, "\n\033[0;31mServer stopped\n", 22);
+		write(1, "\n", 1);
+		clear_buffer();
+		exit(EXIT_SUCCESS);
+	}
 }
